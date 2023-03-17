@@ -11,17 +11,19 @@ def data_input():
         file.write(input('Введите данные: ') + '\n')
 
 
-def data_search():
+def data_search(search):
+    out_list = []
     with open('data.txt', 'r', encoding='utf-8') as file:
-        search = input('Введите данные для поиска: ')
         book = file.read().split('\n')
         empty = True
         for text in book:
             if search.lower() in str(text).lower():
                 print(text)
+                out_list.append(text)
                 empty = False
         if empty:
             print(f'\n Значение {search} не найдено \n')
+        return out_list
 
 
 def data_out():
@@ -30,20 +32,23 @@ def data_out():
         for i in range(len(book)-1):
             print(i+1, '. ', book[i])
 
+
 def rewrite_files(book):
     with open('data.txt', 'w', encoding='utf-8') as file:
         file.writelines('')
     with open('data.txt', 'a', encoding='utf-8') as file:
         for i in book:
-            if len(i)>0: 
-                i=i+'\n'
-            file.write(i)     
+            if len(i) > 0:
+                i = i+'\n'
+            file.write(i)
     print('\n Список после редактирования:')
     data_out()
 
 
 def data_delete():
-    data_out()
+    out_list = data_search(search=input('Введите для удаления: '))
+    if len(out_list)>= 1:
+        del_line=int(input('Требуется уточнение. Введите номер строки для удаления: '))
     del_string = int(input('Введите номер строки для удаления: '))
     with open('data.txt', 'r', encoding='utf-8') as file:
         book = file.read().split('\n')
@@ -56,9 +61,9 @@ def data_update():
     update_string = int(input('Введите номер строки для редактирования: '))
     with open('data.txt', 'r', encoding='utf-8') as file:
         book = file.read().split('\n')
-    book[update_string-1]=input('Введите новое значение: ')
+    book[update_string-1] = input('Введите новое значение: ')
     rewrite_files(book)
-         
+
 
 while True:
     mode = input('\n Комманды телефонной книги:\
@@ -74,7 +79,7 @@ while True:
     elif mode == '1':
         data_input()
     elif mode == '2':
-        data_search()
+        data_search(search=input('Введите данные для поиска: '))
     elif mode == '3':
         data_out()
     elif mode == '4':
