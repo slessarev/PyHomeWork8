@@ -47,13 +47,18 @@ def rewrite_files(book):
 
 def data_delete():
     out_list = data_search(search=input('Введите для удаления: '))
-    if len(out_list)>= 1:
-        del_line=int(input('Требуется уточнение. Введите номер строки для удаления: '))
-    del_string = int(input('Введите номер строки для удаления: '))
+    if len(out_list)> 1:
+        del_string=int(input('Требуется уточнение. Введите номер строки для удаления: '))
+    else:
+        pass
+
     with open('data.txt', 'r', encoding='utf-8') as file:
         book = file.read().split('\n')
-    del book[del_string-1]
-    rewrite_files(book)
+    new_book = []
+    for i in range(len(book)):
+        if book[i] != out_list[0]:
+            new_book.append(book[i])
+    rewrite_files(new_book)
 
 
 def data_update():
