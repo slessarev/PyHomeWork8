@@ -5,71 +5,7 @@
 # Программа должна сохранять данные в текстовом файле
 # Пользователь может ввести одну из характеристик для поиска определенной записи(Например имя или фамилию человека)
 # Использование функций. Ваша программа не должна быть линейной
-
-def data_input():
-    with open('data.txt', 'a', encoding='utf-8') as file:
-        file.write(input('Введите данные: ') + '\n')
-
-
-def data_search(search):
-    out_list = []
-    with open('data.txt', 'r', encoding='utf-8') as file:
-        book = file.read().split('\n')
-        empty = True
-        for text in book:
-            if search.lower() in str(text).lower():
-                print(text)
-                out_list.append(text)
-                empty = False
-        if empty:
-            print(f'\n Значение {search} не найдено \n')
-        return out_list
-
-
-def data_out():
-    with open('data.txt', 'r', encoding='utf-8') as file:
-        book = file.read().split('\n')
-        for i in range(len(book)-1):
-            print(i+1, '. ', book[i])
-
-
-def rewrite_files(book):
-    with open('data.txt', 'w', encoding='utf-8') as file:
-        file.writelines('')
-    with open('data.txt', 'a', encoding='utf-8') as file:
-        for i in book:
-            if len(i) > 0:
-                i = i+'\n'
-            file.write(i)
-    print('\n Список после редактирования:')
-    data_out()
-
-
-def data_delete():
-    out_list = data_search(search=input('Введите для удаления: '))
-    if len(out_list)> 1:
-        del_string=int(input('Требуется уточнение. Введите номер строки для удаления: '))
-    else:
-        pass
-
-    with open('data.txt', 'r', encoding='utf-8') as file:
-        book = file.read().split('\n')
-    new_book = []
-    for i in range(len(book)):
-        if book[i] != out_list[0]:
-            new_book.append(book[i])
-    rewrite_files(new_book)
-
-
-def data_update():
-    data_out()
-    update_string = int(input('Введите номер строки для редактирования: '))
-    with open('data.txt', 'r', encoding='utf-8') as file:
-        book = file.read().split('\n')
-    book[update_string-1] = input('Введите новое значение: ')
-    rewrite_files(book)
-
-
+import functions as fs
 while True:
     mode = input('\n Комманды телефонной книги:\
                 \n 1 - Внести данные\
@@ -82,14 +18,14 @@ while True:
     if mode == '0':
         break
     elif mode == '1':
-        data_input()
+        fs.data_input()
     elif mode == '2':
-        data_search(search=input('Введите данные для поиска: '))
+        fs.data_search(search=input('Введите данные для поиска: '))
     elif mode == '3':
-        data_out()
+        fs.data_out()
     elif mode == '4':
-        data_delete()
+        fs.data_delete()
     elif mode == '5':
-        data_update()
+        fs.data_update()
     else:
         print('Неверный ввод. Введите значение из списка')
